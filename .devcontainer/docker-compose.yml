@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  devcontainer:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        NODE_VERSION: "lts/*"
+
+    volumes:
+      - ../:/workspace:cached
+      # SSH directory for Linux, OSX and WSL
+      - ~/.ssh:/home/vscode/.ssh:z
+      # For Windows without WSL, a copy will be made from /tmp/.ssh to ~/.ssh to fix permissions
+      # - ~/.ssh:/tmp/.ssh:ro
+      # Shell history persistence
+      # - ~/.zsh_history:/root/.zsh_history:z
+      # Git config
+      - ~/.gitconfig:/home/vscode/.gitconfig:z
+      # Kubernetes
+      # - ~/.kube:/root/.kube:z
+      # AWS Credentials
+      - ~/.aws:/home/vscode/.aws:z
+      # - ~/.aws:/tmp/.aws:ro
+      # gnupg for vscode server
+      - ~/.gnupg:/home/vscode/.gnupg
+
+      # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    networks:
+      - app-tier
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    # network_mode: service:db
+    # Uncomment the next line to use a non-root user for all processes.
+    # user: vscode
+
+    environment:
+      - TZ=Asia/Seoul
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - app-tier
+
+    #   db:
+    #     image: postgres:latest
+    #     restart: unless-stopped
+    #     volumes:
+    #       - postgres-data:/var/lib/postgresql/data
+    #     environment:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_DB: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+    #     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+    # volumes:
+    #   postgres-data: null
+networks:
+  app-tier:
+    driver: bridge
