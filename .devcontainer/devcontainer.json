@@ -1,0 +1,68 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/anaconda-postgres
+{
+	"name": "Python 3 & PostgreSQL",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"forwardPorts": [
+		6379,
+		5432,
+		8088,
+		8089
+	],
+	// 👇 Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "python --version",
+	// 👇 Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// python
+				"ms-python.python",
+				"donjayamanne.python-environment-manager",
+				"kevinrose.vsc-python-indent",
+				// "visualstudioexptteam.vscodeintellicode",
+				"njpwerner.autodocstring",
+				// // python lint
+				// "ms-python.black-formatter",
+				"charliermarsh.ruff",
+				// // shell
+				// "foxundermoon.shell-format",
+				// "timonwong.shellcheck",
+				// // env
+				// "mikestead.dotenv",
+				// // git
+				// "donjayamanne.githistory",
+				// "eamodio.gitlens",
+				"mhutchie.git-graph",
+				// "GitHub.vscode-pull-request-github",
+				// "codezombiech.gitignore",
+				// // other
+				// "ultram4rine.vscode-choosealicense",
+				"streetsidesoftware.code-spell-checker",
+				// "tamasfe.even-better-toml",
+				// "esbenp.prettier-vscode",
+				"editorconfig.editorconfig",
+				"redhat.vscode-yaml"
+				// "davidanson.vscode-markdownlint",
+				// "oderwat.indent-rainbow",
+				// "christian-kohler.path-intellisense"
+			]
+			// "settings": {
+			//   "shellformat.path": "/usr/local/bin/shfmt",
+			//   "shellformat.useEditorConfig": true,
+			//   "editor.defaultFormatter": "esbenp.prettier-vscode"
+			// }
+		}
+	},
+ 	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/aws-cli:1": {},
+		"ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+		"ghcr.io/devcontainers/features/common-utils:2": {},
+		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		// "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	}
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
