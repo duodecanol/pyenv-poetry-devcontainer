@@ -9,10 +9,11 @@
 		6379,
 		5432,
 		8088,
-		8089
+		8089,
+		8090,
 	],
 	// 👇 Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "python --version",
+	"postCreateCommand":  "eval \"$(direnv hook zsh)\"",
 	// 👇 Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
@@ -21,7 +22,7 @@
 				"ms-python.python",
 				"donjayamanne.python-environment-manager",
 				"kevinrose.vsc-python-indent",
-				// "visualstudioexptteam.vscodeintellicode",
+				"visualstudioexptteam.vscodeintellicode",
 				"njpwerner.autodocstring",
 				// // python lint
 				// "ms-python.black-formatter",
@@ -57,10 +58,30 @@
 	},
  	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/aws-cli:1": {},
-		"ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
-		"ghcr.io/devcontainers/features/common-utils:2": {},
+		"ghcr.io/devcontainers/features/aws-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {
+			"jqVersion": "latest",
+			"yqVersion": "latest",
+			"gojqVersion": "latest",
+			"xqVersion": "latest",
+			"jaqVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
+			"upgradePackages": true,
+			"username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		"ghcr.io/devcontainers-contrib/features/direnv:1": {
+			"version": "latest"
+		},
 		// "ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

@@ -11,6 +11,7 @@ services:
     volumes:
       - ../..:/workspaces:cached
       - ~/.ssh:/home/vscode/.ssh:z
+      - ~/.aws:/home/vscode/.aws:z
 
     user: vscode
 
@@ -18,24 +19,65 @@ services:
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
+    networks:
+      - app-tier
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
-  db:
-    image: postgres:latest
-    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - ${POSTGRES_PORT-5432}:5432
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: 'exec pg_isready -U $$POSTGRES_USER'
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+    networks:
+      - app-tier
+
     env_file:
         - .env
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
+
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    restart: unless-stopped
+
+    networks:
+      - app-tier
+
+
   redis:
-    image: redis:alpine
+    image: redis:7.2.4-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - app-tier
 
 volumes:
-  postgres-data:
+  pgdata:
+  pgadmin:
+
+networks:
+  app-tier:
+    driver: bridge
