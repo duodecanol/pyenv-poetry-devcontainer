@@ -13,7 +13,7 @@
 		8090,
 	],
 	// 👇 Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand":  "eval \"$(direnv hook zsh)\"",
+	"postCreateCommand":  "direnv hook zsh >> ~/.zshrc && pyenv init &>> ~/.zshrc && source ~/.zshrc",
 	// 👇 Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
@@ -39,6 +39,9 @@
 				// "GitHub.vscode-pull-request-github",
 				// "codezombiech.gitignore",
 				// // other
+				"albert.TabOut",
+                "IBM.output-colorizer", // Colorize your output/test logs
+                "vscode-icons-team.vscode-icons", // Better file extension icons
 				// "ultram4rine.vscode-choosealicense",
 				"streetsidesoftware.code-spell-checker",
 				// "tamasfe.even-better-toml",
