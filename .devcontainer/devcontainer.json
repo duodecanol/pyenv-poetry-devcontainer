@@ -52,12 +52,20 @@
 				// "davidanson.vscode-markdownlint",
 				// "oderwat.indent-rainbow",
 				// "christian-kohler.path-intellisense"
-			]
-			// "settings": {
+			],
+			"settings": {
 			//   "shellformat.path": "/usr/local/bin/shfmt",
 			//   "shellformat.useEditorConfig": true,
 			//   "editor.defaultFormatter": "esbenp.prettier-vscode"
-			// }
+				"[python]": {
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.fixAll": "explicit",
+						"source.organizeImports": "explicit"
+					},
+					"editor.defaultFormatter": "charliermarsh.ruff"
+					}
+				}
 		}
 	},
  	// Features to add to the dev container. More info: https://containers.dev/features.
